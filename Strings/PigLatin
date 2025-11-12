@@ -1,0 +1,176 @@
+// Name:   
+// Date: 
+import java.util.*;
+import java.io.*;
+public class PigLatin
+{
+   public static void main(String[] args) 
+   {
+      //part_1_using_pig();
+      //part_2_using_piglatenizeFile();
+      
+      /*  extension only    */
+       String pigLatin = pig("What!?");
+       System.out.print(pigLatin + "\t\t" + pigReverse(pigLatin));   //Yahwta!?
+       pigLatin = pig("{(Hello!)}");
+       System.out.print("\n" + pigLatin + "\t\t" + pigReverse(pigLatin)); //{(Yaholle!)}
+       pigLatin = pig("\"McDonald???\"");
+       System.out.println("\n" + pigLatin + "  " + pigReverse(pigLatin));//"YaDcmdlano???"
+   }
+
+   public static void part_1_using_pig()
+   {
+      Scanner sc = new Scanner(System.in); //input from the keyboard
+      while(true)
+      {
+         System.out.print("\nWhat word? ");
+         String s = sc.next();     //reads up to white space
+         if(s.equals("-1"))
+         {
+            System.out.println("Goodbye!"); 
+            System.exit(0);
+         }
+         String p = pig(s);
+         System.out.println( p );
+      }		
+   }
+
+   public static final String punct = ",./;:'\"?<>[]{}|`~!@#$%^&*()";
+   public static final String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+   public static final String vowels = "AEIOUaeiou";
+   public static final String vowelsy = "AEIOUYaeiouy";
+
+   public static String pig(String s)
+   {
+      if(s.length() == 0)
+         return "";
+   
+      //remove and store the beginning punctuation 
+           String startPunct="";
+           while(s.length()>=1&&punct.contains(s.substring(0,1))){
+            startPunct+=s.charAt(0);
+            s=s.substring(1);
+           }
+      //remove and store the ending punctuation 
+           String endPunct="";
+           while(s.length()>=1&&punct.contains(""+s.charAt(s.length()-1))){
+            endPunct=s.charAt(s.length()-1)+endPunct;
+            s=s.substring(0,s.length()-1);
+           }
+      //START HERE with the basic case:
+      //     find the index of the first vowel
+      //     y is a vowel if it is not the first letter
+      //     qu
+            int i=0;
+            if(vowels.contains(s.substring(0,1))){
+                return(startPunct+s+"way"+endPunct);
+             
+            }else{
+                if(i<s.length()-2&&s.substring(i,i+2).equalsIgnoreCase("qu"))
+                    i+=2;
+                if(s.substring(0,1).equalsIgnoreCase("y"))
+                i++;
+                while(i<s.length()-1){
+                    if(i<s.length()-2&&s.substring(i,i+2).equalsIgnoreCase("qu"))
+                    i+=2;
+                    else if(!vowelsy.contains(s.substring(i,i+1)))
+                    i++;
+                    else 
+                    break;
+                }
+                
+            }
+      //if no vowel has been found
+            if(i>=s.length()-1) 
+                return("**** NO VOWEL ****");
+      //is the first letter capitalized?
+      //return the piglatinized word 
+      if(Character.isUpperCase(s.charAt(0)))
+      return(startPunct+s.substring(i,i+1).toUpperCase()+s.substring(i+1)+s.substring(0,1).toLowerCase()+s.substring(1,i)+"ay"+endPunct);
+      return(startPunct+s.substring(i)+s.substring(0,1).toLowerCase()+s.substring(1,i)+"ay"+endPunct);
+
+            }
+      public static String pigReverse(String s)
+   {
+      if(s.length() == 0)
+         return "";
+      //remove and store the beginning punctuation 
+           String startPunct="";
+           while(s.length()>=1&&punct.contains(s.substring(0,1))){
+            startPunct+=s.charAt(0);
+            s=s.substring(1);
+           }
+      //remove and store the ending punctuation 
+           String endPunct="";
+           while(s.length()>=1&&punct.contains(""+s.charAt(s.length()-1))){
+            endPunct=s.charAt(s.length()-1)+endPunct;
+            s=s.substring(0,s.length()-1);
+           }
+           String sReverse = s.substring(0,1).toLowerCase();
+           for(int i =1;i<s.length();i++){
+           sReverse=s.charAt(i)+sReverse;
+           }
+           if(Character.isUpperCase(s.charAt(0)))
+           sReverse=sReverse.substring(0,1).toUpperCase()+sReverse.substring(1);
+      return(startPunct+sReverse+endPunct);   //just to compile   
+   }
+
+   }
+
+
+   /*public static void part_2_using_piglatenizeFile() 
+   {
+      Scanner sc = new Scanner(System.in);
+      System.out.print("input filename including .txt: ");
+      String fileNameIn = sc.next();
+      System.out.print("output filename including .txt: ");
+      String fileNameOut = sc.next();
+      piglatenizeFile( fileNameIn, fileNameOut );
+      System.out.println("Piglatin done!");
+   }*/
+
+/****************************** 
+*  piglatinizes each word in each line of the input file
+*    precondition:  both fileNames include .txt
+*    postcondition:  output a piglatinized .txt file 
+******************************/
+   /*public static void piglatenizeFile(String fileNameIn, String fileNameOut) 
+   {
+      Scanner infile = null;
+      try
+      {
+         infile = new Scanner(new File(fileNameIn));  
+      }
+      catch(IOException e)
+      {
+         System.out.println("oops");
+         System.exit(0);   
+      }
+   
+      PrintWriter outfile = null;
+      try
+      {
+         outfile = new PrintWriter(new FileWriter(fileNameOut));
+      }
+      catch(IOException e)
+      {
+         System.out.println("File not created");
+         System.exit(0);
+      }
+   	//process each word in each line
+      
+      
+      
+   
+      outfile.close();
+      infile.close();
+   }*/
+   
+   /** EXTENSION: Output each PigLatin word in reverse, preserving before-and-after 
+       punctuation.  
+   */
+   
+
+
+
+
